@@ -45,6 +45,12 @@ public class PetShopController {
     public ResponseEntity<List<PetModel>> mostrarPets(){
         return ResponseEntity.status(HttpStatus.OK).body(petrepository.findAll());
     }
+    @GetMapping("/api_petshop/pet/{id}")
+    ResponseEntity<Object> buscarPet (@PathVariable (name = "id") Long id){
+        Optional<PetModel> pet = petrepository.findById(id);
+        if (pet.isEmpty()) return ResponseEntity.status(HttpStatus.NOT_FOUND).body("O pet com esse id não foi encontrado");
+        return ResponseEntity.status(HttpStatus.OK).body(pet);
+    }
     @PutMapping ("/api_petshop/dono/{id}")
     public ResponseEntity<Object> atualizarDono (@PathVariable (name = "id") Long id , @RequestBody DonoUpdateDTO donoUpdateDto){
         Optional<DonoModel> dono = donorepository.findById(id);
